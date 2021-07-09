@@ -12,7 +12,7 @@ import (
 func main() {
 
 	// Create a new Discord session using the provided bot token.
-	dg, err := discordgo.New("Bot " + "ODYzMDMzMzc3OTE2MzIxODEy.YOhAdw.Ixg8xvnJ2HCheAI9BkOgpw8rJyY")
+	dg, err := discordgo.New("Bot " + "")
 	if err != nil {
 		fmt.Println("error creating Discord session,", err)
 		return
@@ -41,7 +41,20 @@ func main() {
 // This function will be called (due to AddHandler above) every time a new
 // message is created on any channel that the autenticated bot has access to.
 func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
+	// Partitioned into sublists you can query
+	var arrayQuestions = []string{"https://leetcode.com/problems/two-sum/", "https://leetcode.com/problems/best-time-to-buy-and-sell-stock/", "https://leetcode.com/problems/contains-duplicate/", "https://leetcode.com/problems/product-of-array-except-self/", "https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/", "https://leetcode.com/problems/3sum/", "https://leetcode.com/problems/container-with-most-water/"}
+	var binaryQuestions = []string{"https://leetcode.com/problems/sum-of-two-integers/", "https://leetcode.com/problems/number-of-1-bits/", "https://leetcode.com/problems/counting-bits/", "https://leetcode.com/problems/missing-number/", "https://leetcode.com/problems/reverse-bits/"}
+	var linkedListQuestions = []string{"https://leetcode.com/problems/reverse-linked-list/", "https://leetcode.com/problems/linked-list-cycle/", "https://leetcode.com/problems/merge-two-sorted-lists/", "https://leetcode.com/problems/merge-k-sorted-lists/", "https://leetcode.com/problems/remove-nth-node-from-end-of-list/", "https://leetcode.com/problems/reorder-list/"}
+	var heapQuestions = []string{"https://leetcode.com/problems/merge-k-sorted-lists/", "https://leetcode.com/problems/top-k-frequent-elements/", "https://leetcode.com/problems/find-median-from-data-stream/"}
 
+	//Blind 75 List
+	var blindSeventyFive = []string{"https://leetcode.com/problems/two-sum/", "https://leetcode.com/problems/best-time-to-buy-and-sell-stock/", "https://leetcode.com/problems/contains-duplicate/", "https://leetcode.com/problems/product-of-array-except-self/", "https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/", "https://leetcode.com/problems/3sum/", "https://leetcode.com/problems/container-with-most-water/", "https://leetcode.com/problems/reverse-linked-list/", "https://leetcode.com/problems/linked-list-cycle/", "https://leetcode.com/problems/merge-two-sorted-lists/", "https://leetcode.com/problems/merge-k-sorted-lists/", "https://leetcode.com/problems/remove-nth-node-from-end-of-list/", "https://leetcode.com/problems/reorder-list/", "https://leetcode.com/problems/sum-of-two-integers/", "https://leetcode.com/problems/number-of-1-bits/", "https://leetcode.com/problems/counting-bits/", "https://leetcode.com/problems/missing-number/", "https://leetcode.com/problems/reverse-bits/", "https://leetcode.com/problems/merge-k-sorted-lists/", "https://leetcode.com/problems/top-k-frequent-elements/", "https://leetcode.com/problems/find-median-from-data-stream/"}
+	var flag bool = false
+
+	if flag == true {
+		fmt.Println(linkedListQuestions, heapQuestions, binaryQuestions, blindSeventyFive)
+
+	}
 	// Ignore all messages created by the bot itself
 	// This isn't required in this specific example but it's a good practice.
 	if m.Author.ID == s.State.User.ID {
@@ -51,16 +64,54 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	if m.Content == "*yo" {
 		s.ChannelMessageSend(m.ChannelID, "SHEEEEEEEEEEEEESSHHH")
 	}
+	//Learn a specific topic
+	if m.Content == "*learn arrays" {
+		//Set up spaced rep for arrays
+		isSuccessful, scheduleLink := scheduleEvents(arrayQuestions, m.Author.ID)
 
-	// If the message is "pong" reply with "Ping!"
-	if m.Content == "pong" {
-		s.ChannelMessageSend(m.ChannelID, "Ping!")
+		if isSuccessful {
+			s.ChannelMessageSend(m.ChannelID, ("Newly Generated Spaced Repetition Calendar" + scheduleLink))
+		} else {
+			s.ChannelMessageSend(m.ChannelID, "Failed to generate a new spaced repetition for test user")
+		}
+
 	}
-	if m.Content == "*enroll" {
-		s.ChannelMessageSend(m.ChannelID, "We are in the process of allowing users to set up a spaced repetition study schedule for a given topic. Give us some time because by us I mean me and I am building in a language i have never really used :))))")
-	}
+	// if m.Content == "*learn binary" {
+	// 	for i := 0; i < len(binaryQuestions); i++ {
+	// 		s.ChannelMessageSend(m.ChannelID, binaryQuestions[i])
+	// 	}
+	// }
 }
 
-func HandleEnroll() {
+/*
+	1. Create a calendar with that users id
 
+
+	We want to be reminded about each problem with a schedule
+
+	dates:
+		i days from today
+		i days from today + 2 days
+		i days from today + 30 days
+		i days from today + 60 days
+
+
+	For each item in the list we want to add all of these days to the new calendar we made
+
+
+
+	then we respond with an invite to the calendar with the given spaced repetition schedule
+
+*/
+func scheduleEvents(questions []string, calendarId string) (bool, string) {
+	var scheduledSuccessfully bool = true
+	calendarLink := ""
+	fmt.Println(calendarId)
+
+	//Generate a calendar with the given id
+	for i := 0; i < len(questions); i++ {
+		//Add an event to the calendar
+	}
+
+	return (scheduledSuccessfully), (calendarLink)
 }

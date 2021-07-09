@@ -10,15 +10,24 @@ import (
 )
 
 func main() {
-	//Create a new discord session using the provided bot token
 
-	dg, err := discordgo.New("Bot " + os.Getenv(("DISCORD_TOEKN")))
+	// Create a new Discord session using the provided bot token.
+	dg, err := discordgo.New("Bot " + "ODYzMDMzMzc3OTE2MzIxODEy.YOhAdw.Ixg8xvnJ2HCheAI9BkOgpw8rJyY")
 	if err != nil {
-		fmt.Println("Error creating new bot session", err)
+		fmt.Println("error creating Discord session,", err)
 		return
 	}
-	//Add a handler function to our bot
+
+	// Register the messageCreate func as a callback for MessageCreate events.
 	dg.AddHandler(messageCreate)
+
+	// Open a websocket connection to Discord and begin listening.
+	err = dg.Open()
+	if err != nil {
+		fmt.Println("error opening connection,", err)
+		return
+	}
+
 	// Wait here until CTRL-C or other term signal is received.
 	fmt.Println("Bot is now running.  Press CTRL-C to exit.")
 	sc := make(chan os.Signal, 1)
@@ -29,15 +38,29 @@ func main() {
 	dg.Close()
 }
 
-//This function is called anytime a message is sent in any channel.
-
+// This function will be called (due to AddHandler above) every time a new
+// message is created on any channel that the autenticated bot has access to.
 func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 
-	//Ignore all messages sent by our bot
+	// Ignore all messages created by the bot itself
+	// This isn't required in this specific example but it's a good practice.
 	if m.Author.ID == s.State.User.ID {
 		return
 	}
-	if m.Content == "</>ping" {
-		s.ChannelMessageSend(m.ChannelID, "SHEEESHHHH")
+	// If the message is "ping" reply with "Pong!"
+	if m.Content == "*yo" {
+		s.ChannelMessageSend(m.ChannelID, "SHEEEEEEEEEEEEESSHHH")
 	}
+
+	// If the message is "pong" reply with "Ping!"
+	if m.Content == "pong" {
+		s.ChannelMessageSend(m.ChannelID, "Ping!")
+	}
+	if m.Content == "*enroll" {
+		s.ChannelMessageSend(m.ChannelID, "We are in the process of allowing users to set up a spaced repetition study schedule for a given topic. Give us some time because by us I mean me and I am building in a language i have never really used :))))")
+	}
+}
+
+func HandleEnroll() {
+
 }

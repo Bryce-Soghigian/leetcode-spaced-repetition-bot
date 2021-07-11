@@ -1,0 +1,11 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../sample-go-app-v2"
+		}
+	],
+	"settings": {}
+}

@@ -1,12 +1,14 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"os/signal"
 	"syscall"
 
 	"github.com/bwmarrin/discordgo"
+	"google.golang.org/api/calendar/v3"
 )
 
 func main() {
@@ -107,7 +109,10 @@ func scheduleEvents(questions []string, calendarId string) (bool, string) {
 	var scheduledSuccessfully bool = true
 	calendarLink := ""
 	fmt.Println(calendarId)
+	//Login to calendar
 
+	ctx := context.Background()
+	calendarService, err := calendar.NewService(ctx)
 	//Generate a calendar with the given id
 	for i := 0; i < len(questions); i++ {
 		//Add an event to the calendar
